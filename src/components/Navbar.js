@@ -28,7 +28,11 @@ const NavbarComp = () => {
         className="sticky fixed-top"
       >
         <Container>
-          <Navbar.Brand href="/">Task Manager</Navbar.Brand>
+          <Navbar.Brand>
+            <Link className="text-black text-decoration-none" to="/">
+              <h2>Task Manager</h2>
+            </Link>
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -47,7 +51,7 @@ const NavbarComp = () => {
                     Log In
                   </Link>
                   <Link
-                    href="/signup"
+                    to="/signup"
                     className="rounded me-4 text-black py-1 px-2 text-decoration-none"
                     style={{ background: "rgb(66, 133, 244)" }}
                   >
