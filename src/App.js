@@ -1,58 +1,39 @@
-import { useEffect, useState } from 'react';
-import './style.css';
-import NewTodoForm from './NewTodoForm';
-import TodoList from './TodoList';
+// import { useEffect, useState } from "react";
+import "./style.css";
+// import NewTodoForm from "./components/NewTodoForm";
+// import TodoList from "./components/TodoList";
+import Navbar from "./components/Navbar";
+import { AuthProvider } from "./context/AuthContext";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import { Container } from "react-bootstrap";
+import TodoComp from "./components/TodoComp";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-
-  const [todos,setTodos] = useState(() => {
-    const localValue = localStorage.getItem('ITEMS')
-    if (localValue === null) return []
-
-    return JSON.parse(localValue)
-
-  })
-
-  useEffect(() => {
-    localStorage.setItem('ITEMS', JSON.stringify(todos))
-  }, [todos])
-
-  function addTodo(title) {
-    setTodos(currentTodos => [
-      ...currentTodos,
-      {
-      id:crypto.randomUUID(), title, completed:false
-    }])
-    
-  }
-
-  function toggleTodo(id, completed) {
-    setTodos(currentTodos => {
-      return currentTodos.map(todo => {
-        if (todo.id === id) {
-          return {...todo, completed}
-        }
-
-        return todo
-      })
-    })
-  }
-
-  function deleteTodo(id) {
-    setTodos(currentTodos => {
-      return currentTodos.filter(todo => todo.id !== id)
-    })
-  }
-
-  
-
-  console.log(todos)
-
   return (
     <>
-      <NewTodoForm addTodo={addTodo}/>
-      <h1 className='header'>Todo List</h1>
-      <TodoList todos = {todos} toggleTodo = {toggleTodo} deleteTodo = {deleteTodo}/>
+      <Container className="mt-5 d-flex align-items-center justify-content-center">
+        <div className="App w-100" style={{ maxWidth: "400px" }}>
+          <AuthProvider>
+            <Navbar />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <TodoComp />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              {/* <Route path="/forgot-password" element={<ForgortPassword />} /> */}
+            </Routes>
+          </AuthProvider>
+        </div>
+      </Container>
     </>
   );
 }
